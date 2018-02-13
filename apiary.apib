@@ -1,0 +1,274 @@
+FORMAT: 1A
+
+# UFind REST API
+
+UFind REST is the services API that supports the UFind mobile application.
+
+# Group Category
+
+Endpoints for accessing the representation of the Category in the UFind API.
+
+## Category [/category/{category_id}]
+
++ Parameters
+    + category_id (number) - ID of the Category as an integer
+
+### Get Category [GET]
+
+Retrieve one category with the given category ID.
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Education",
+            "members": 50
+        }
+
++ Response 404 (application/json)
+
+### Edit Category [PUT]
+
+Makes the category with the given ID, the one in the body.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "name": "Education",
+                "members": 50
+            }
+
++ Response 202 (application/json)
+
+            {
+                "id": 1,
+                "name": "Education",
+                "members": 50
+            }
+
++ Response 404 (application/json)
+
+
+### Delete Category [DELETE]
+
+Delete one category with given category ID.
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Education",
+            "members": 50
+        }
+
++ Response 404 (application/json)
+
+
+## Category Collection [/categories]
+
+### List All Category [GET]
+
+Retrieve the list of all the categories available.
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Education",
+                "members": 50
+            }
+        ]
+
+### Create Category [POST]
+
+Creates a new category.
+
++ Request (application/json)
+    
+    + Body
+
+            {
+                "name": "Education"
+            }
+
++ Response 201 (application/json)
+
+        {
+            "name": "Education",
+            "members": 50
+        }
+
+
+# Group Subscription
+
+Endpoints to access Subscriptions in the UFind API.
+
+## Subscription [/category/{category_id}/subscribe]
+
++ Parameters
+    + category_id (number) - ID of the Category as an integer
+
+### Create Subscription [POST]
+Subscribe a user to the category given by the category ID in the URL.
+
++ Request (application/json)
+    
+    + Body
+    
+            {
+                "username": "dsantos"
+            }
+            
++ Response 202 (application/json)
+
++ Response 404 (application/json)
+
+### Delete Subscription [DELETE]
+Unsubscribe a user of the category given by the category ID in the URL.
+
++ Request (application/json)
+    
+    + Body
+        
+            {
+                "username": "dsantos"
+            }
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+## Subscription Intersection [/subscription/{user_id}]
+
++ Parameters
+    + user_id (number) - ID of the user in the form of an integer
+
+### Get Subscription Intersection [GET]
+Retreive all the users that a shares the same Category with the given user.
+
++ Response 200 (application/json)
+        
+        [
+            {
+                "user": {
+                    "first_name": "Daniel",
+                    "last_name": "Santos"
+                },
+                
+                "category": {
+                    "name": "Education"
+                }
+            },
+            {
+                "user": {
+                    "first_name": "Serey",
+                    "last_name": "Morm"
+                },
+                
+                "category": {
+                    "name": "Photography"
+                }
+            }
+        ]
+
+
+# Group User
+
+Endpoints for accesing the representation of a User in the UFind API.
+
+## User [/user/{user_id}]
+
++ Parameters
+    + user_id (number) - ID of the user in the form of an integer
+
+### Get User [GET]
+
+Retrieve a user with the given ID.
+
++ Response 200 (application/json)
+
+         {
+            "id": 1,
+            "first_name": "Daniel",
+            "last_name": "Santos",
+            "email": "daniel_santos@student.uml.edu"
+         }
+         
++ Response 404 (application/json)
+
+
+### Edit User [PUT]
+
+Makes the user with the given ID, the one in the body.
+
++ Request (application/json)
+
+    + Body 
+    
+            {
+                "first_name": "Daniel",
+                "last_name": "Santos",
+                "email": "daniel_santos@student.uml.edu"
+            }
+        
++ Response 202 (application/json)
+
++ Response 404 (application/json)
+
+
+## User Collection [/users]
+
+### Create User [POST]
+
+Create a user.
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "first_name": "Daniel",
+                "last_name": "Santos",
+                "email": "daniel_santos@student.uml.edu",
+                "password": "encrypted_password"
+            }
+
++ Response 201 (application/json)
+        
+        {
+            "id": 1
+            "first_name": "Daniel",
+            "last_name": "Santos",
+            "email": "daniel_santos@student.uml.edu"
+        }
+        
++ Response 400 (application/json)
+
+# Group Authentication
+
+These endpoints are used to authenticate a user.
+
+# Auth User [/auth]
+
+### Create Auth Token [POST]
+
++ Request (application/json)
+    
+    + Body
+        
+            {
+                "username": "dsantos",
+                "password": "plain-text-password"
+            }
+        
++ Response 202 (application/json)
+    
+        {
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MTg0ODMxNjAsImV4cCI6MTU1MDAxOTE2MCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.kNZgbLNAmhtldV3na2qsmbjGgy13UNapC63oyTgrlvg
+        }
+        
++ Response 403 (application/json)
