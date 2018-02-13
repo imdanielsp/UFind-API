@@ -1,0 +1,149 @@
+FORMAT: 1A
+
+# UFind REST API
+
+UFind REST is the services API that supports the UFind mobile application.
+
+# Category
+
+## Category [/category/{category_id}]
+
++ Parameters
+    + category_id (number) - ID of the Category as an integer
+
+### Get Category [GET]
+
+Retrieve one category with the given category ID.
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Education",
+            "members": 50
+        }
+
++ Response 404 (application/json)
+
+### Edit Category [PUT]
+
+Makes the category with the given ID, the one in the body.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "name": "Education",
+                "members": 50
+            }
+
++ Response 200 (application/json)
+
+            {
+                "id": 1,
+                "name": "Education",
+                "members": 50
+            }
+
++ Response 404 (application/json)
+
+
+### Delete Category [DELETE]
+
+Delete one category with given category ID.
+
++ Response 200 (application/json)
+
+        {
+            "id": 1,
+            "name": "Education",
+            "members": 50
+        }
+
++ Response 404 (application/json)
+
+
+## Category Collection [/categories]
+
+### List All Category [GET]
+
+Retrieve the list of all the categories available.
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "name": "Education",
+                "members": 50
+            }
+        ]
+
+### Create Category [POST]
+
+Creates a new category.
+
++ Request (application/json)
+
+        {
+            "name": "Education"
+        }
+
++ Response 201 (application/json)
+
+
+    + Body
+
+            {
+                "name": "Education",
+                "members": 50
+            }
+
+# User
+
+## User [/user/{user_id}]
+
++ Parameters
+    + user_id (number) - ID of the user in the form of an integer
+
+### Get User [GET]
+
+Retrieve a user with the given ID.
+
++ Response 200 (application/json)
+
+         {
+            "id": 1,
+            "first_name": "Daniel",
+            "last_name": "Santos",
+            "email": "daniel_santos@student.uml.edu",
+         }
+         
++ Response 404 (application/json)
+
+
+### Create User [POST]
+
+Create a user
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "first_name": "Daniel",
+                "last_name": "Santos",
+                "email": "daniel_santos@student.uml.edu",
+                "password": "encrypted_password"
+            }
+
++ Response 200 (application/json)
+        
+        {
+            "first_name": "Daniel",
+            "last_name": "Santos",
+            "email": "daniel_santos@student.uml.edu",
+            "password": "encrypted_password"
+        }
