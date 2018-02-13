@@ -88,20 +88,93 @@ Retrieve the list of all the categories available.
 Creates a new category.
 
 + Request (application/json)
-
-        {
-            "name": "Education"
-        }
-
-+ Response 201 (application/json)
-
-
+    
     + Body
 
             {
-                "name": "Education",
-                "members": 50
+                "name": "Education"
             }
+
++ Response 201 (application/json)
+
+        {
+            "name": "Education",
+            "members": 50
+        }
+
+
+# Group Subscription
+
+Endpoints to access Subscriptions in the UFind API.
+
+## Subscription [/category/{category_id}/subscribe]
+
++ Parameters
+    + category_id (number) - ID of the Category as an integer
+
+### Create Subscription [POST]
+Subscribe a user to the category given by the category ID in the URL.
+
++ Request (application/json)
+    
+    + Body
+    
+            {
+                "username": "dsantos"
+            }
+            
++ Response 202 (application/json)
+
++ Response 404 (application/json)
+
+### Delete Subscription [DELETE]
+Unsubscribe a user of the category given by the category ID in the URL.
+
++ Request (application/json)
+    
+    + Body
+        
+            {
+                "username": "dsantos"
+            }
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+
+## Subscription Intersection [/subscription/{user_id}]
+
++ Parameters
+    + user_id (number) - ID of the user in the form of an integer
+
+### Get Subscription Intersection [GET]
+Retreive all the users that a shares the same Category with the given user.
+
++ Response 200 (application/json)
+        
+        [
+            {
+                "user": {
+                    "first_name": "Daniel",
+                    "last_name": "Santos"
+                },
+                
+                "category": {
+                    "name": "Education"
+                }
+            },
+            {
+                "user": {
+                    "first_name": "Serey",
+                    "last_name": "Morm"
+                },
+                
+                "category": {
+                    "name": "Photography"
+                }
+            }
+        ]
+
 
 # Group User
 
