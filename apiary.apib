@@ -4,7 +4,9 @@ FORMAT: 1A
 
 UFind REST is the services API that supports the UFind mobile application.
 
-# Category
+# Group Category
+
+Endpoints for accessing the representation of the Category in the UFind API.
 
 ## Category [/category/{category_id}]
 
@@ -39,7 +41,7 @@ Makes the category with the given ID, the one in the body.
                 "members": 50
             }
 
-+ Response 200 (application/json)
++ Response 202 (application/json)
 
             {
                 "id": 1,
@@ -101,7 +103,9 @@ Creates a new category.
                 "members": 50
             }
 
-# User
+# Group User
+
+Endpoints for accesing the representation of a User in the UFind API.
 
 ## User [/user/{user_id}]
 
@@ -118,15 +122,36 @@ Retrieve a user with the given ID.
             "id": 1,
             "first_name": "Daniel",
             "last_name": "Santos",
-            "email": "daniel_santos@student.uml.edu",
+            "email": "daniel_santos@student.uml.edu"
          }
          
 + Response 404 (application/json)
 
 
+### Edit User [PUT]
+
+Makes the user with the given ID, the one in the body.
+
++ Request (application/json)
+
+    + Body 
+    
+            {
+                "first_name": "Daniel",
+                "last_name": "Santos",
+                "email": "daniel_santos@student.uml.edu"
+            }
+        
++ Response 202 (application/json)
+
++ Response 404 (application/json)
+
+
+## User Collection [/users]
+
 ### Create User [POST]
 
-Create a user
+Create a user.
 
 + Request (application/json)
 
@@ -139,11 +164,38 @@ Create a user
                 "password": "encrypted_password"
             }
 
-+ Response 200 (application/json)
++ Response 201 (application/json)
         
         {
+            "id": 1
             "first_name": "Daniel",
             "last_name": "Santos",
-            "email": "daniel_santos@student.uml.edu",
-            "password": "encrypted_password"
+            "email": "daniel_santos@student.uml.edu"
         }
+        
++ Response 400 (application/json)
+
+# Group Authentication
+
+These endpoints are used to authenticate a user.
+
+# Auth User [/auth]
+
+### Create Auth Token [POST]
+
++ Request (application/json)
+    
+    + Body
+        
+            {
+                "username": "dsantos",
+                "password": "plain-text-password"
+            }
+        
++ Response 202 (application/json)
+    
+        {
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1MTg0ODMxNjAsImV4cCI6MTU1MDAxOTE2MCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.kNZgbLNAmhtldV3na2qsmbjGgy13UNapC63oyTgrlvg
+        }
+        
++ Response 403 (application/json)
