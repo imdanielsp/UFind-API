@@ -8,9 +8,18 @@
     :license: BSD, see LICENSE for more details.
 """
 from flask import Flask
+from flask_jwt import JWT
+from flask_bcrypt import Bcrypt
+from peewee import SqliteDatabase
+
+import config
 
 
 app = Flask(__name__)
+
+db = SqliteDatabase(config.DATABASE_URI)
+jwt = JWT(app, )
+bcrypt = Bcrypt(app)
 
 
 def register_tables():

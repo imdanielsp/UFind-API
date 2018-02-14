@@ -18,3 +18,5 @@ PORT = 8080
 DEBUG = True
 
 SECRET_KEY = "2dc27eab485446a7b30016381f5fcfd4"
+
+DATABASE_URI = "{}/UFind.db".format(BASE_DIR)
