@@ -6,7 +6,7 @@
 """
 
 
-def authenticate(username, password):
+def cb_authenticate(username, password):
     """
         Verifies that a User with the given username contains the given password
     :param username:
@@ -16,5 +16,5 @@ def authenticate(username, password):
     pass
 
 
-def identity(payload):
+def cb_identity(payload):
     pass

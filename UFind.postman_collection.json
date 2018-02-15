@@ -1,0 +1,109 @@
+{
+	"info": {
+		"name": "UFind",
+		"_postman_id": "1700f9b4-3db5-42f4-638f-a861b8dbd014",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:8080/ufind/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"ufind",
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"first_name\": \"Daniel\",\n  \"last_name\": \"Santos\",\n  \"email\": \"daniel_santos@student.uml.edu\",\n  \"password\": \"encrypted_password\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/ufind/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"ufind",
+						"api",
+						"v1",
+						"users"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit User",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"first_name\": \"Daniel\",\n  \"last_name\": \"Smith\",\n  \"email\": \"daniel_santos@student.uml.edu\",\n  \"password\": \"encrypted_password\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/ufind/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"ufind",
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
