@@ -9,9 +9,13 @@ from flask import Blueprint, jsonify, request
 import config
 from app.models.user import User
 from app.utils import make_json_response
+from flask_jwt_extended import (create_access_token)
 
 user_api = Blueprint('user', __name__, url_prefix=config.URL_PREFIX)
 
+@user_api.route("/", methods=["GET"])
+def test_route():
+    return "/ test route for GET Method"
 
 @user_api.route("/user/<int:user_id>", methods=["GET"])
 def get_user(user_id):
@@ -38,6 +42,7 @@ def create_user():
         Creates a user given by the JSON in the request.
     :return: Response
     """
+
     try:
         first_name = request.json["first_name"]
         last_name = request.json["last_name"]
@@ -51,10 +56,29 @@ def create_user():
         except Exception as e:
             return make_json_response(status=409)
         else:
-            return jsonify(
-                user.to_safe_dict()
-            )
+            return jsonify(user)
 
+@user_api.route("/login", methods=["POST"])
+def login():
+    """
+        Check email and password in database, returns JWT.
+    :param email:
+    :param password:
+    :return: Response
+    """
+
+    try:
+        email = request.json["email"]
+        password = request.json["password"]
+    except KeyError:
+        return make_json_response(status=400)
+    else:
+        try:
+            user = User.get_user_by_email(email)
+        except Exception as e:
+            return make_json_response(status=409)
+        else:
+            return jsonify(user.generate_token())
 
 @user_api.route("/user/<int:user_id>", methods=["PUT"])
 def edit_user(user_id):

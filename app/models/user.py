@@ -10,7 +10,7 @@ from peewee import *
 
 from app import bcrypt
 from . import BaseModel
-
+from flask_jwt_extended import (create_access_token)
 
 class User(BaseModel):
     """
@@ -36,12 +36,14 @@ class User(BaseModel):
         :param password:
         :return:
         """
-        return User.create(
+        user = User.create(
             first_name=first_name,
             last_name=last_name,
             email=email,
             password=bcrypt.generate_password_hash(password)
         )
+
+        return user.generate_token()
 
     @staticmethod
     def check_password_for(email: str, password: str) -> bool:
@@ -67,6 +69,11 @@ class User(BaseModel):
     def to_safe_dict(self):
         user = self.to_dict()
         user.pop("password")
+        return user
+    
+    def generate_token(self):
+        user = self.to_safe_dict()
+        user['access_token'] = create_access_token(identity=user)
         return user
 
     def to_dict(self):

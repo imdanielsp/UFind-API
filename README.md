@@ -1,1 +1,25 @@
 #  UFind API
+
+### Generating a Virtual Environment
+
+We'll be using `virtualenv` to generate a virtual environment for our development environment to better manage our python3 modules. Run the following command to generate one after you've installed `virtualenv`
+
+`virtualenv -p python3 venv`
+
+To install virtualenv, [click here.]
+
+To install pip
+
+### Development
+
+Before the server can be started, remember to install all of the python3 modules with 
+
+`pip3 install -r requirements.txt`
+
+Once that's done, start the API by running:
+
+`pip3 run.py`
+
+The API will be available at localhost, or 127.0.0.1, at port 8080. This can be configured in /config.py
+
+[To install virtualenv, click here.]: https://virtualenv.pypa.io/en/stable/installation/
