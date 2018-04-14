@@ -52,20 +52,26 @@ class User(BaseModel):
         except IntegrityError:
             raise User.DuplicateUser
 
-        return user.generate_token()
+        return user.to_dict_with_token()
 
     @staticmethod
     def check_password_for(email: str, password: str) -> bool:
-        user = User.get(User.email == email)
+        user = User.get_user_by_email(email)
         return bcrypt.check_password_hash(user.password, password)
 
     @staticmethod
     def get_user_by_id(user_id: int):
-        return User.get(User.id == user_id)
+        try:
+            return User.get(User.id == user_id)
+        except DoesNotExist:
+            raise User.NotFound
 
     @staticmethod
     def get_user_by_email(email: str):
-        return User.get(User.email == email)
+        try:
+            return User.get(User.email == email)
+        except DoesNotExist:
+            raise User.NotFound
 
     def update_with(self, first_name, last_name, email, password, bio):
         self.first_name = first_name
@@ -81,7 +87,7 @@ class User(BaseModel):
         user.pop("password")
         return user
 
-    def generate_token(self):
+    def to_dict_with_token(self):
         user = self.to_safe_dict()
         user['access_token'] = create_access_token(identity=user)
         return user

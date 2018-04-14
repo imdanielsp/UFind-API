@@ -7,11 +7,9 @@
     :copyright: (c) Feb 2018 by Daniel Santos.
     :license: BSD, see LICENSE for more details.
 """
-from flask import Flask, blueprints
-from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
-)
+from flask import Flask
+from flask_jwt_extended import JWTManager
+
 from flask_bcrypt import Bcrypt
 from peewee import SqliteDatabase
 
