@@ -22,7 +22,6 @@ app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = config.SECRET_KEY
 
 db = SqliteDatabase(config.DATABASE_URI)
-jwt = JWT(app, cb_authenticate, cb_identity)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
