@@ -37,6 +37,14 @@ class Category(BaseModel):
     class DuplicateCategory(IntegrityError):
         pass
 
+    def increment(self):
+        self.member_count += 1
+        self.save()
+
+    def decrement(self):
+        self.member_count -= 1
+        self.save()
+
     @staticmethod
     def all():
         return list(map(lambda cat: cat.to_dict(), Category.select()))

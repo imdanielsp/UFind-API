@@ -33,11 +33,17 @@ from app.models.category import Category
 from app.resources.category import category_api
 app.register_blueprint(category_api)
 
+# Register the Subscription API endpoints
+from app.models.subscription import Subscription
+from app.resources.subscription import subscription_api
+app.register_blueprint(subscription_api)
+
 
 def register_tables():
     db.create_tables([
         User,
-        Category
+        Category,
+        Subscription
     ])
 
 
