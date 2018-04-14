@@ -3,6 +3,8 @@
     
     :copyright: (c) Feb 2018 by Daniel Santos.
     :license: BSD, see LICENSE for more details.
+
+    Note: We are using peewee as our ORM.
 """
 import datetime
 
@@ -20,13 +22,15 @@ class User(BaseModel):
     last_name = CharField()
     email = CharField(unique=True)
     password = CharField()
+    bio = CharField()
     joined = DateTimeField(default=datetime.datetime.now())
 
     def __repr__(self):
         return "<User: {} {}>".format(self.first_name, self.last_name)
 
     @staticmethod
-    def safe_create(first_name: str, last_name: str, email: str, password: str):
+    def safe_create(first_name: str, last_name: str, email: str, password: str,
+                    bio: str):
         """
             Create a user and hash the password before storing it in the
             database.
@@ -34,14 +38,19 @@ class User(BaseModel):
         :param last_name:
         :param email:
         :param password:
+        :param bio:
         :return:
         """
-        return User.create(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=bcrypt.generate_password_hash(password)
-        )
+        try:
+            return User.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=bcrypt.generate_password_hash(password),
+                bio=bio
+            )
+        except IntegrityError:
+            raise User.DuplicateUser
 
     @staticmethod
     def check_password_for(email: str, password: str) -> bool:
@@ -56,11 +65,12 @@ class User(BaseModel):
     def get_user_by_email(email: str):
         return User.get(User.email == email)
 
-    def update_with(self, first_name, last_name, email, password):
+    def update_with(self, first_name, last_name, email, password, bio):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
+        self.bio = bio
 
         self.save()
 
@@ -79,8 +89,12 @@ class User(BaseModel):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "email": self.email,
-            "password": self.password
+            "password": self.password,
+            "bio": self.bio
         }
 
     class NotFound(DoesNotExist):
+        pass
+
+    class DuplicateUser(IntegrityError):
         pass

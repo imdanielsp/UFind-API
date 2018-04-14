@@ -43,12 +43,13 @@ def create_user():
         last_name = request.json["last_name"]
         email = request.json["email"]
         password = request.json["password"]
+        bio = request.json["bio"]
     except KeyError:
         return make_json_response(status=400)
     else:
         try:
-            user = User.safe_create(first_name, last_name, email, password)
-        except Exception as e:
+            user = User.safe_create(first_name, last_name, email, password, bio)
+        except User.DuplicateUser:
             return make_json_response(status=409)
         else:
             return jsonify(
