@@ -6,6 +6,7 @@
 """
 
 
+
 def cb_authenticate(username, password):
     """
         Verifies that a User with the given username contains the given password
