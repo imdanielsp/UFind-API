@@ -27,10 +27,16 @@ from app.models.user import User
 from app.resources.user import user_api
 app.register_blueprint(user_api)
 
+# Register the Category API endpoints
+from app.models.category import Category
+from app.resources.category import category_api
+app.register_blueprint(category_api)
+
 
 def register_tables():
     db.create_tables([
-        User
+        User,
+        Category
     ])
 
 
