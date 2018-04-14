@@ -12,7 +12,8 @@ from peewee import *
 
 from app import bcrypt
 from . import BaseModel
-from flask_jwt_extended import (create_access_token)
+from flask_jwt_extended import create_access_token
+
 
 class User(BaseModel):
     """
@@ -23,6 +24,7 @@ class User(BaseModel):
     email = CharField(unique=True)
     password = CharField()
     bio = CharField()
+    profile_image = BlobField()
     joined = DateTimeField(default=datetime.datetime.now())
 
     def __repr__(self):
@@ -30,7 +32,7 @@ class User(BaseModel):
 
     @staticmethod
     def safe_create(first_name: str, last_name: str, email: str, password: str,
-                    bio: str):
+                    bio: str, profile_image: bytes):
         """
             Create a user and hash the password before storing it in the
             database.
@@ -39,6 +41,7 @@ class User(BaseModel):
         :param email:
         :param password:
         :param bio:
+        :param profile_image:
         :return:
         """
         try:
@@ -47,7 +50,8 @@ class User(BaseModel):
                 last_name=last_name,
                 email=email,
                 password=bcrypt.generate_password_hash(password),
-                bio=bio
+                bio=bio,
+                profile_image=profile_image
             )
         except IntegrityError:
             raise User.DuplicateUser
@@ -73,12 +77,14 @@ class User(BaseModel):
         except DoesNotExist:
             raise User.NotFound
 
-    def update_with(self, first_name, last_name, email, password, bio):
+    def update_with(self, first_name, last_name, email, password, bio,
+                    profile_image):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.bio = bio
+        self.profile_image = profile_image
 
         self.save()
 
@@ -89,6 +95,7 @@ class User(BaseModel):
 
     def to_dict_with_token(self):
         user = self.to_safe_dict()
+        user.pop("profile_image")
         user['access_token'] = create_access_token(identity=user)
         return user
 
@@ -103,7 +110,8 @@ class User(BaseModel):
             "last_name": self.last_name,
             "email": self.email,
             "password": self.password,
-            "bio": self.bio
+            "bio": self.bio,
+            "profile_image": self.profile_image.decode()
         }
 
     class NotFound(DoesNotExist):

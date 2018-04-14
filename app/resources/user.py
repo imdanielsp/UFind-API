@@ -13,11 +13,6 @@ from app.utils import make_json_response
 user_api = Blueprint('user', __name__, url_prefix=config.URL_PREFIX)
 
 
-@user_api.route("/", methods=["GET"])
-def test_route():
-    return "/ test route for GET Method"
-
-
 @user_api.route("/user/<int:user_id>", methods=["GET"])
 def get_user(user_id):
     """
@@ -50,11 +45,13 @@ def create_user():
         email = request.json["email"]
         password = request.json["password"]
         bio = request.json["bio"]
+        profile_picture = request.json["profile_picture"].encode()
     except KeyError:
         return make_json_response(status=400)
     else:
         try:
-            user = User.safe_create(first_name, last_name, email, password, bio)
+            user = User.safe_create(first_name, last_name, email, password,
+                                    bio, profile_picture)
         except User.DuplicateUser:
             return make_json_response(status=409)
         else:
