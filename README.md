@@ -6,11 +6,15 @@ We'll be using `virtualenv` to generate a virtual environment for our developmen
 
 `virtualenv -p python3 venv`
 
-To install virtualenv, [click here.]
+[To install virtualenv, click here.]: https://virtualenv.pypa.io/en/stable/installation/
 
 To install pip
 
 ### Development
+
+To activate the virtual env. run:
+
+`source path/to/venv/bin/activate`
 
 Before the server can be started, remember to install all of the python3 modules with 
 
@@ -18,8 +22,6 @@ Before the server can be started, remember to install all of the python3 modules
 
 Once that's done, start the API by running:
 
-`pip3 run.py`
+`python3 run.py`
 
-The API will be available at localhost, or 127.0.0.1, at port 8080. This can be configured in /config.py
-
-[To install virtualenv, click here.]: https://virtualenv.pypa.io/en/stable/installation/
+The API will be available at localhost, or 127.0.0.1, at port 8080. This can be changed in /config.py
