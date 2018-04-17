@@ -62,8 +62,6 @@ def create_user():
 def login():
     """
         Check email and password in database, returns JWT.
-    :param email:
-    :param password:
     :return: Response
     """
 
@@ -81,6 +79,23 @@ def login():
             return make_json_response(status=403)
         except User.NotFound:
             return make_json_response(status=404)
+
+
+@user_api.route("/user/verify/email", methods=["POST"])
+def sign_up_verify():
+    """
+    Verify that the email isn't a duplicate.
+    :return:
+    """
+    try:
+        email = request.json["email"]
+    except TypeError:
+        return make_json_response(status=400)
+    else:
+        if User.is_email_duplicate(email):
+            return make_json_response(status=409)
+        else:
+            return make_json_response(status=200)
 
 
 @user_api.route("/user/<int:user_id>", methods=["PUT"])

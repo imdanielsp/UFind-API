@@ -77,6 +77,15 @@ class User(BaseModel):
         except DoesNotExist:
             raise User.NotFound
 
+    @staticmethod
+    def is_email_duplicate(email):
+        try:
+            User.get(User.email == email)
+        except DoesNotExist:
+            return False
+        else:
+            return True
+
     def update_with(self, first_name, last_name, email, password, bio,
                     profile_image):
         self.first_name = first_name
