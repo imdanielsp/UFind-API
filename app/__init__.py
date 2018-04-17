@@ -38,12 +38,18 @@ from app.models.subscription import Subscription
 from app.resources.subscription import subscription_api
 app.register_blueprint(subscription_api)
 
+# Register the Connection API endpoints
+from app.models.connection import Connection
+from app.resources.connection import connection_api
+app.register_blueprint(connection_api)
+
 
 def register_tables():
     db.create_tables([
         User,
         Category,
-        Subscription
+        Subscription,
+        Connection
     ])
 
 

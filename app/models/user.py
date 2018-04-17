@@ -102,6 +102,11 @@ class User(BaseModel):
         user.pop("password")
         return user
 
+    def to_dict_without_picture(self):
+        user = self.to_safe_dict()
+        user.pop("profile_image")
+        return user
+
     def to_dict_with_token(self):
         user = self.to_safe_dict()
         user.pop("profile_image")
