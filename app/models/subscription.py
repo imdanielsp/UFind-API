@@ -9,6 +9,7 @@ from peewee import *
 from . import BaseModel
 from app.models.user import User
 from app.models.category import Category
+from app.models.connection import Connection
 
 
 class Subscription(BaseModel):
@@ -67,14 +68,29 @@ class Subscription(BaseModel):
 
         users = set()
 
-        # TODO: Maybe can be done with queries instead of loops....
         for subs in subscriptions:
             for subs2 in Subscription.by_category(subs.category.id):
                 if subs2.user.id is not user_id:
-                    # TODO: Don't send users that are made a connection.
                     users.add(subs2.user)
 
-        return users
+        conns = Connection.select().where(
+            Connection.user_a == user_id or Connection.user_b == user_id
+        )
+
+        discoverable = set()
+
+        for user in users:
+            is_connection = False
+
+            for conn in conns:
+                if conn.user_a.id == user.id or conn.user_b.id == user.id and \
+                        conn.user_a.id == user_id or conn.user_b.id == user_id:
+                    is_connection = True
+
+            if not is_connection:
+                discoverable.add(user)
+
+        return discoverable
 
     def to_dict(self):
         user = self.user.to_safe_dict()
