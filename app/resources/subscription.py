@@ -16,6 +16,35 @@ subscription_api = Blueprint('subscription', __name__,
                              url_prefix=config.URL_PREFIX)
 
 
+@subscription_api.route("/category/subscribe", methods=["POST"])
+def bulk_subscribe():
+    """
+    Subscribe to all the category in a list.
+    :return:
+    """
+    try:
+        categories = request.json["categories"]
+        email = request.json["email"]
+    except TypeError:
+        return make_json_response(status=400)
+    else:
+        subs = []
+        for category in categories:
+            try:
+                s = Subscription.subscribe(
+                    email=email,
+                    category_id=category
+                )
+                subs.append(s.to_dict_without_user())
+            except Category.DoesNotExist:
+                return make_json_response(status=404)
+            except User.DoesNotExist:
+                return make_json_response(status=404)
+            except Subscription.Duplicate:
+                return make_json_response(status=409)
+        return jsonify(subs)
+
+
 @subscription_api.route("/category/<int:category_id>/subscribe",
                         methods=["POST"])
 def subscribe(category_id):
