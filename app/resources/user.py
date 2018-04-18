@@ -45,13 +45,13 @@ def create_user():
         email = request.json["email"]
         password = request.json["password"]
         bio = request.json["bio"]
-        profile_picture = request.json["profile_picture"].encode()
+        profile_image = request.json["profile_image"].encode()
     except KeyError:
         return make_json_response(status=400)
     else:
         try:
             user = User.safe_create(first_name, last_name, email, password,
-                                    bio, profile_picture)
+                                    bio, profile_image)
         except User.DuplicateUser:
             return make_json_response(status=409)
         else:
