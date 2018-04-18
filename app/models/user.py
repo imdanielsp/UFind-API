@@ -13,6 +13,7 @@ from peewee import *
 from app import bcrypt
 from . import BaseModel
 from flask_jwt_extended import create_access_token
+from app.utils import check_image_moderation
 
 
 class User(BaseModel):
@@ -44,6 +45,9 @@ class User(BaseModel):
         :param profile_image:
         :return:
         """
+
+        profile_image = check_image_moderation(profile_image)
+
         try:
             user = User.create(
                 first_name=first_name,
