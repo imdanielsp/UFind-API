@@ -51,10 +51,8 @@ class Connection(BaseModel):
         :return: bool
         """
         it = Connection.select().where(
-            (Connection.user_a == user_a.id and
-             Connection.user_b == user_b.id) or
-            (Connection.user_a == user_b.id and
-             Connection.user_b == user_a.id)
+            (Connection.user_a == user_a.id & Connection.user_b == user_b.id) |
+            (Connection.user_a == user_b.id & Connection.user_b == user_a.id)
         )
         return it.first() is not None
 
