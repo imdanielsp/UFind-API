@@ -12,6 +12,7 @@ from peewee import *
 
 from app import bcrypt
 from . import BaseModel
+
 from flask_jwt_extended import create_access_token
 from app.utils import check_image_moderation
 
@@ -122,6 +123,8 @@ class User(BaseModel):
             Make this object a dictionary.
         :return: dict
         """
+        from app.models.subscription import Subscription
+
         return {
             "id": self.id,
             "first_name": self.first_name,
@@ -129,7 +132,9 @@ class User(BaseModel):
             "email": self.email,
             "password": self.password,
             "bio": self.bio,
-            "profile_image": self.profile_image.decode()
+            "profile_image": self.profile_image.decode(),
+            "subscriptions": list(map(lambda sub: sub.category.to_dict(),
+                                  Subscription.by_user(self.id)))
         }
 
     class NotFound(DoesNotExist):
