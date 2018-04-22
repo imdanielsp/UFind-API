@@ -11,7 +11,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 
 from flask_bcrypt import Bcrypt
-from peewee import SqliteDatabase
+from peewee import MySQLDatabase
 
 import config
 from app.auth import cb_authenticate, cb_identity
@@ -19,7 +19,8 @@ from app.auth import cb_authenticate, cb_identity
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = config.SECRET_KEY
 
-db = SqliteDatabase(config.DATABASE_URI)
+db = MySQLDatabase(config.DB_NAME, user=config.DB_USERNAME,
+                   password=config.DB_PASSWORD, host=config.DB_HOST, port=3306)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 

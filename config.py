@@ -20,3 +20,8 @@ DEBUG = True
 SECRET_KEY = "2dc27eab485446a7b30016381f5fcfd4"
 
 DATABASE_URI = "{}/UFind.db".format(BASE_DIR)
+
+DB_HOST = "us-cdbr-iron-east-05.cleardb.net"
+DB_NAME = "heroku_8b591c6ac33c025"
+DB_USERNAME = "b5e4865df413e2"
+DB_PASSWORD = "8472932d"
