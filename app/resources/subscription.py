@@ -106,7 +106,8 @@ def get_subscriptions(user_id):
     )
 
 
-@subscription_api.route("/category/subscription/discover/<int:user_id>", methods=["GET"])
+@subscription_api.route("/category/subscription/discover/<int:user_id>",
+                        methods=["GET"])
 def discover(user_id):
     """
     Returns users with the same interest as the user provided.
@@ -115,7 +116,10 @@ def discover(user_id):
     """
     return jsonify(
         list(
-            map(lambda user: user.to_safe_dict(),
+            map(lambda user: {
+                "user": user[0].to_safe_dict(),
+                "common": list(map(lambda cat: cat.to_dict(), user[1]))
+            },
                 Subscription.intersection_with(user_id))
         )
     )

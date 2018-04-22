@@ -77,7 +77,7 @@ class Subscription(BaseModel):
             Connection.user_a == user_id or Connection.user_b == user_id
         )
 
-        discoverable = set()
+        discoverable = list()
 
         for user in users:
             is_connection = False
@@ -88,9 +88,29 @@ class Subscription(BaseModel):
                     is_connection = True
 
             if not is_connection:
-                discoverable.add(user)
+                commons = Subscription.get_commons(user_id, user.id)
+                discoverable.append((user, commons))
 
         return discoverable
+
+    @staticmethod
+    def get_commons(user_a, user_b):
+        """
+        Get common subscription between the users
+        :param user_a:
+        :param user_b:
+        :return:
+        """
+        subs_user_a = set(Subscription.by_user(user_a))
+        subs_user_b = set(Subscription.by_user(user_b))
+
+        common = set()
+        for subA in subs_user_a:
+            for subB in subs_user_b:
+                if subA.category == subB.category:
+                    common.add(subA.category)
+
+        return common
 
     def to_dict(self):
         user = self.user.to_safe_dict()
