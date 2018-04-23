@@ -1,3 +1,4 @@
+anyjson==0.3.3
 bcrypt==3.1.4
 certifi==2018.4.16
 cffi==1.11.4
@@ -9,7 +10,7 @@ Flask-Cors==3.0.3
 Flask-JWT==0.3.2
 Flask-JWT-Extended==3.7.1
 Flask-SocketIO==2.9.6
-gevent==1.2.2
+gevent==1.3b1
 gevent-socketio==0.3.6
 gevent-websocket==0.10.1
 greenlet==0.4.13
