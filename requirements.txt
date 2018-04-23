@@ -9,6 +9,10 @@ Flask-Cors==3.0.3
 Flask-JWT==0.3.2
 Flask-JWT-Extended==3.7.1
 Flask-SocketIO==2.9.6
+gevent==1.2.2
+gevent-socketio==0.3.6
+gevent-websocket==0.10.1
+greenlet==0.4.13
 gunicorn==19.7.1
 idna==2.6
 itsdangerous==0.24
