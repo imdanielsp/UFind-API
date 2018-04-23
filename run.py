@@ -4,11 +4,9 @@
     :copyright: (c) Feb 2018 by Daniel Santos.
     :license: BSD, see LICENSE for more details.
 """
-import config
-from app import app, register_tables
+from app import app, register_tables, socketio
 
 
 if __name__ == '__main__':
     register_tables()
-    app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)
- 
+    socketio.run(app, port=8080, debug=True)

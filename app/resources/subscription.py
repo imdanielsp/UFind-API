@@ -11,6 +11,7 @@ from app.models.subscription import Subscription
 from app.models.category import Category
 from app.models.user import User
 from app.utils import make_json_response
+from app import socketio
 
 subscription_api = Blueprint('subscription', __name__,
                              url_prefix=config.URL_PREFIX)
@@ -102,7 +103,7 @@ def get_subscriptions(user_id):
     :return:
     """
     return jsonify(
-        Subscription.by_user(user_id)
+        list(map(lambda sub: sub.to_dict(), Subscription.by_user(user_id)))
     )
 
 

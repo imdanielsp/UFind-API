@@ -9,6 +9,7 @@
 """
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flask_socketio import SocketIO
 
 from flask_bcrypt import Bcrypt
 from peewee import MySQLDatabase
@@ -23,6 +24,9 @@ db = MySQLDatabase(config.DB_NAME, user=config.DB_USERNAME,
                    password=config.DB_PASSWORD, host=config.DB_HOST, port=3306)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+socketio = SocketIO(app)
+
+from app.resources import chat
 
 # Register the User API endpoints
 from app.models.user import User
@@ -44,13 +48,21 @@ from app.models.connection import Connection
 from app.resources.connection import connection_api
 app.register_blueprint(connection_api)
 
+# Register the Chat API endpoints
+from app.models.conversation import Conversation
+from app.models.message import Message
+from app.resources.chat import chat_api
+app.register_blueprint(chat_api)
+
 
 def register_tables():
     db.create_tables([
         User,
         Category,
         Subscription,
-        Connection
+        Connection,
+        Conversation,
+        Message
     ])
 
 
