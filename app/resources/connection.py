@@ -62,3 +62,13 @@ def verify_connection():
                 return make_json_response(status=200)
             else:
                 return make_json_response(status=204)
+
+
+@connection_api.route("/connection/<int:user_id>")
+def get_connection_by_user(user_id):
+    """
+    Returns the
+    :param user_id:
+    :return:
+    """
+    return jsonify(Connection.by_user(user_id))

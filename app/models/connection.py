@@ -56,5 +56,18 @@ class Connection(BaseModel):
         )
         return it.first() is not None
 
+    @staticmethod
+    def by_user(user_id):
+        """
+        Get all the connections made by a user.
+        :param user_id:
+        :return:
+        """
+        it = Connection.select()
+        return list(
+            map(lambda conn: conn.to_dict(),
+                filter(lambda conn: conn.user_a.id == user_id
+                                    or conn.user_b.id == user_id, it)))
+
     class Duplicate(Exception):
         pass
