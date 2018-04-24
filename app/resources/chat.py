@@ -54,23 +54,17 @@ def create_conversation():
 
 
 @socketio.on("join", namespace=config.URL_PREFIX + "/chat")
-def join(message):
-    msg = json.loads(message)
-
+def join(msg):
     join_room(msg["conversation_id"])
 
 
 @socketio.on("leave", namespace=config.URL_PREFIX + "/chat")
-def join(message):
-    msg = json.loads(message)
-
+def join(msg):
     leave_room(msg["conversation_id"])
 
 
 @socketio.on("text", namespace=config.URL_PREFIX + "/chat")
-def rcv_message(message):
-    msg = json.loads(message)
-
+def rcv_message(msg):
     user = User.get_by_id(msg["sender_id"])
     conversation_id = msg['conversation_id']
 
