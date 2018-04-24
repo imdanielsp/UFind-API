@@ -6,7 +6,7 @@
 """
 import json
 from flask import Blueprint, request, jsonify
-from flask_socketio import emit, join_room, leave_room
+from flask_socketio import send, join_room, leave_room
 
 import config
 from app import socketio
@@ -53,17 +53,32 @@ def create_conversation():
             )
 
 
+@socketio.on("join", namespace=config.URL_PREFIX + "/chat")
+def join(message):
+    msg = json.loads(message)
+
+    join_room(msg["conversation_id"])
+
+
+@socketio.on("leave", namespace=config.URL_PREFIX + "/chat")
+def join(message):
+    msg = json.loads(message)
+
+    leave_room(msg["conversation_id"])
+
+
 @socketio.on("text", namespace=config.URL_PREFIX + "/chat")
 def rcv_message(message):
     msg = json.loads(message)
 
     user = User.get_by_id(msg["sender_id"])
+    conversation_id = msg['conversation_id']
 
-    emit('message', {
+    send({
         'msg': msg["msg"],
         'sender': user.to_dict_without_picture(),
-        'conversation_id': msg['conversation_id']
-    })
+        'conversation_id': conversation_id
+    }, room=conversation_id, json=True)
 
     Message.add(
         msg.get("conversation_id"),
