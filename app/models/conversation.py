@@ -74,5 +74,40 @@ class Conversation(BaseModel):
             return False
         return True
 
+    @staticmethod
+    def get_thread_of(user_id):
+        def transformer(conv):
+            conv_map = conv.to_dict()
+
+            if conv_map["user_a"]["id"] != user_id:
+                receiver = conv_map["user_a"]
+            else:
+                receiver = conv_map["user_b"]
+
+            return {
+                "conversation_id": conv_map["id"],
+                "receiver": receiver,
+                "last": None
+            }
+
+        def add_message(conv):
+            from app.models.message import Message
+
+            msgs = Message.select().where(
+                Message.conversation == conv["conversation_id"]
+            ).order_by(Message.sent_at.desc())
+            msg = msgs.first()
+            if msg:
+                msg = msg.to_dict()
+                msg.pop("sender")
+                conv["last"] = msg
+            return conv
+
+        convs = list(Conversation.select().where(
+            Conversation.user_a == user_id)) + list(
+            Conversation.select().where(Conversation.user_b == user_id))
+
+        return list(map(add_message, map(transformer, convs)))
+
     class NotFound(Exception):
         pass

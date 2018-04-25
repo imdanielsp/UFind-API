@@ -4,7 +4,6 @@
     :copyright: (c) Apr 2018 by Daniel Santos.
     :license: BSD, see LICENSE for more details.
 """
-import json
 from flask import Blueprint, request, jsonify
 from flask_socketio import send, join_room, leave_room
 
@@ -51,6 +50,11 @@ def create_conversation():
                     "messages": Message.by_conversation(conv)
                 }
             )
+
+
+@chat_api.route("/conversation/all/<int:user_id>", methods=["GET"])
+def get_conversation_thread(user_id):
+    return jsonify(Conversation.get_thread_of(user_id))
 
 
 @socketio.on("join", namespace=config.URL_PREFIX + "/chat")

@@ -22,8 +22,8 @@ class Connection(BaseModel):
 
     def to_dict(self):
         return {
-            "user_a": self.user_a.to_dict_without_picture(),
-            "user_b": self.user_b.to_dict_without_picture(),
+            "user_a": self.user_a.to_dict(),
+            "user_b": self.user_b.to_dict(),
         }
 
     @staticmethod
