@@ -63,11 +63,17 @@ class Connection(BaseModel):
         :param user_id:
         :return:
         """
+        def remove_self(connection):
+            if connection["user_a"]["id"] != user_id:
+                return connection["user_b"]
+            return connection["user_a"]
+
         it = Connection.select()
         return list(
-            map(lambda conn: conn.to_dict(),
-                filter(lambda conn: conn.user_a.id == user_id
-                                    or conn.user_b.id == user_id, it)))
+            map(remove_self,
+                map(lambda conn: conn.to_dict(),
+                    filter(lambda conn: conn.user_a.id == user_id
+                                        or conn.user_b.id == user_id, it))))
 
     class Duplicate(Exception):
         pass
