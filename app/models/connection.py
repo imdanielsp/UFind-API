@@ -50,11 +50,16 @@ class Connection(BaseModel):
         :param user_b:
         :return: bool
         """
-        it = Connection.select().where(
-            (Connection.user_a == user_a.id & Connection.user_b == user_b.id) |
-            (Connection.user_a == user_b.id & Connection.user_b == user_a.id)
-        )
-        return it.first() is not None
+        it = Connection.raw("""
+                SELECT * FROM `connection` 
+                WHERE (`user_a_id` = %s 
+                  AND `user_b_id` = %s)
+                  OR
+                  (`user_a_id` = %s
+                  AND `user_b_id` = %s)
+            """, user_a.id, user_b.id, user_b.id, user_a.id)
+
+        return not len(it.execute()) == 0
 
     @staticmethod
     def by_user(user_id):
