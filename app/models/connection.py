@@ -65,8 +65,8 @@ class Connection(BaseModel):
         """
         def remove_self(connection):
             if connection["user_a"]["id"] != user_id:
-                return connection["user_b"]
-            return connection["user_a"]
+                return connection["user_a"]
+            return connection["user_b"]
 
         it = Connection.select()
         return list(
