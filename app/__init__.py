@@ -24,7 +24,7 @@ db = MySQLDatabase(config.DB_NAME, user=config.DB_USERNAME,
                    password=config.DB_PASSWORD, host=config.DB_HOST, port=3306)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-socketio = SocketIO(app)
+socketio = SocketIO(app=app, ping_timeout=30000)
 
 from app.resources import chat
 
